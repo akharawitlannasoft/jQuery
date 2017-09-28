@@ -775,4 +775,172 @@ $(function () {
         }]
     });
 
+    /**
+     * Chart #14
+     */
+    var chart14 = Highcharts.chart('chart14', {
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+    
+        plotOptions: {
+            series: {
+                cursor: 'pointer',
+                events: {
+                    click: function (event) {
+                        console.log(this)
+                        console.log(event)
+                        console.log(this.name, event.point.category, event.point.options.y)
+                        alert(this.name + ' / ' + event.point.category + ' / ' + event.point.options.y)
+                    }
+                }
+            }
+        },
+    
+        series: [{
+            name: 'Data1',
+            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],  
+        }, {
+            name: 'ST',
+            data: [234.9, 13.5, 51.4, 1.2, 234.0, 23.0, 123.6, 41.5, 216.4, 645.1, 11.6, 15.4]
+    
+        }]
+    });
+
+    /**
+     * Chart #15
+     */
+    var chart15 = Highcharts.chart('chart15', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Green Sheet Stock'
+        },
+        xAxis: {
+            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas'],
+            crosshair: true
+        },
+        yAxis: {
+            labels: {
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Quantity',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        },
+        tooltip: {
+            formatter: function () {
+                let total = 0;
+                var s = '<b>' + this.x + '</b>';
+    
+                $.each(this.points, function () {
+                    s += '<br/>' + this.series.name + ': ' + this.y ;
+                    if(this.series.index !== 0) {
+                        total += this.y;
+                    }else {
+                        s += '<br /> --------- <br />'
+                    }
+                    
+                });
+
+                s += '<br /> Total: ' + total;
+    
+                return s;
+            },
+            shared: true
+        },
+
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                point: {
+                    cursor: 'pointer',
+                    events: {
+                        click: function (event) {
+                            console.log(event)
+                            alert(
+                                event.point.series.name + ' clicked\n'
+                            );
+                        }
+                    }
+                }
+            },
+            
+        },
+        series: [{
+            name: 'Plan',
+            type: 'line',
+            data: [30, 20, 10, 30 ,30],
+            marker: {
+                enabled: false
+            },
+            color: Highcharts.getOptions().colors[5],
+            zIndex: 1
+        }, {
+            name: 'Punched',
+            data: [5, 3, 4, 7, 2],
+            color: Highcharts.getOptions().colors[3],
+        }, {
+            name: 'Remain',
+            data: [3, 4, 4, 2, 5],
+            color: Highcharts.getOptions().colors[0],
+        }]
+    });
+
+
+    var chart16 = Highcharts.chart('chart16', {
+        title: {
+            text: 'Mouse events demo'
+        },
+        subtitle: {
+            text: 'On point mouse over or mouse out, the values should be reported in top left'
+        },
+        plotOptions: {
+            series: {
+                point: {
+                    events: {
+                        mouseOver: function () {
+                            var chart = this.series.chart;
+                            if (!chart.lbl) {
+                                chart.lbl = chart.renderer.label('')
+                                    .attr({
+                                        padding: 10,
+                                        r: 10,
+                                        fill: Highcharts.getOptions().colors[1]
+                                    })
+                                    .css({
+                                        color: '#FFFFFF'
+                                    })
+                                    .add();
+                            }
+                            chart.lbl
+                                .show()
+                                .attr({
+                                    text: 'x: ' + this.x + ', y: ' + this.y
+                                });
+                        }
+                    }
+                },
+                events: {
+                    mouseOut: function () {
+                        if (this.chart.lbl) {
+                            this.chart.lbl.hide();
+                        }
+                    }
+                }
+            }
+        },
+        tooltip: {
+            enabled: false
+        },
+        series: [{
+            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+        }]
+    });
 });
